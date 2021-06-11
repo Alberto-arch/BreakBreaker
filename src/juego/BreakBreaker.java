@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -12,10 +13,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class BreakBreaker extends JFrame implements KeyListener {
+public class BreakBreaker extends JFrame implements Runnable {
 	private JPanel contentPane;
 	private int ballx,bally;
-	private int barray,barrax;
+	private int barray;
+	private int barrax;
+	private Blockes brick;
+	private KeyList key;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() throws NullPointerException, NumberFormatException {
@@ -31,7 +35,7 @@ public class BreakBreaker extends JFrame implements KeyListener {
 	public BreakBreaker() {
 		setTitle("BreakBreaker");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//setSize(500,500);
+		setSize(500,500);
 		setExtendedState(MAXIMIZED_BOTH);
 		
 		setVisible(true);
@@ -43,83 +47,30 @@ public class BreakBreaker extends JFrame implements KeyListener {
 		bally=getHeight();
 		ballx=getWidth();
 		
+		barrax=getWidth();
 		barray=getHeight();
-		barrax=getWidth()/2;
-
-		addKeyListener(this);
+		
+		brick=new Blockes(20,10);
+		key=new KeyList(barrax);
+		addKeyListener(key);
+		
 	}
+   
 	public void paint(Graphics g) {
-		//Fondo
-        g.setColor(Color.black);
-        g.fillRect(contentPane.getWidth()-contentPane.getWidth(),contentPane.getHeight()-contentPane.getHeight(), 
-        		getWidth(),getHeight());
+    	g.setColor(Color.black);
+        g.fillRect(getWidth()-getWidth(),getHeight()-getHeight(),getWidth(),getHeight());
         
-        g.setColor (Color.red);
-        for(int i=0;i<contentPane.getWidth()/42;i++) {
-    		i=i+1;
-        	for(int j=0;j<contentPane.getHeight()/42;j++) {
-        		j=j+1;
-    			g.fillRect ((contentPane.getWidth()/2+7)-(contentPane.getWidth()/2-40*i),
-    			(contentPane.getHeight()/2-50)-(contentPane.getHeight()/3-15*j),70,20);
-        	}
-        }
-        g.setColor(Color.yellow);
-        g.fillRect (barrax,
-        barray-80,100,20);
-        
-        //System.out.println(barrax*2);
-        
+    	brick.paint((Graphics) g);
+    	g.setColor(Color.yellow);
+        g.fillRect (key.getBarrax()/2,barray-80,100,20);
+                
         g.setColor(Color.white);
         g.fillOval(ballx,bally,20,20);
         
+        repaint();
+    }
 
-	}
-	public void left() {
-		if(barrax>0) {
-			barrax=barrax-10;
-		}
-		}
-	public void right() {
-		if(barrax<contentPane.getWidth()-100) {
-			barrax=barrax+10;
-		}		
-		}
-	public int randx() {
-		return (int)(Math.random()*getWidth());
-		
-		}
-	public int randy() {
-		return (int)(Math.random()*getHeight());
 
-		
-		}
 	
-	@Override
-	public void keyTyped(KeyEvent e) {
-		
-	}
-	@Override
-	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode()==KeyEvent.VK_LEFT) {
-			left();
-		}
-		if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
-			right();
-		}
-		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
-			for(int i=0;i<10;i++) {
-				ballx=randx();
-				bally=randy();
-				repaint();
 
-			}
-			}
-		repaint();
-
-	}
-	@Override
-	public void keyReleased(KeyEvent e) {
-		
-		
-	}
 }
