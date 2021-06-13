@@ -13,13 +13,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class BreakBreaker extends JFrame implements Runnable {
+public class BreakBreaker extends JFrame implements KeyListener {
 	private JPanel contentPane;
 	private int ballx,bally;
 	private int barray;
 	private int barrax;
 	private Blockes brick;
-	private KeyList key;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() throws NullPointerException, NumberFormatException {
@@ -47,12 +46,11 @@ public class BreakBreaker extends JFrame implements Runnable {
 		bally=getHeight();
 		ballx=getWidth();
 		
-		barrax=getWidth();
+		barrax=getWidth()/2;
 		barray=getHeight();
 		
 		brick=new Blockes(20,10);
-		key=new KeyList(barrax);
-		addKeyListener(key);
+		addKeyListener(this);
 		
 	}
    
@@ -62,13 +60,39 @@ public class BreakBreaker extends JFrame implements Runnable {
         
     	brick.paint((Graphics) g);
     	g.setColor(Color.yellow);
-        g.fillRect (key.getBarrax()/2,barray-80,100,20);
+        g.fillRect (barrax,barray-80,100,20);
                 
         g.setColor(Color.white);
         g.fillOval(ballx,bally,20,20);
         
         repaint();
     }
+	public void left() {
+		barrax=barrax-40;		
+	}
+	public void rigth() {
+		barrax=barrax+40;		
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {
+		
+	}
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode()==KeyEvent.VK_LEFT) {
+			left();
+		}
+		if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
+			rigth();
+		}
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		
+	}
+	
 
 
 	
