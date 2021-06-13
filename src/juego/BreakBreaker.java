@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -77,18 +79,26 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
     }
 	
 	public void left() {
-		barrax=barrax-40;		
+		if(barrax>0+10) {
+			barrax=barrax-40;
+		}		
 	}
 	public void rigth() {
-		barrax=barrax+40;		
+		if(barrax<getWidth()-100) {
+			barrax=barrax+40;
+		}		
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		timer.start();
+		
 		if(start) {
-			ballx=+ballxdir;
-			bally=+ballydir;
+			if (new Rectangle(ballx, bally, 20, 20).intersects(new Rectangle(barrax, getHeight()-80, 100, 20))) {
+                ballydir=-ballydir;
+            }
+			ballx=ballx+ballxdir;
+			bally=bally+ballydir;
 			
 			if(ballx<0) {
 				ballxdir=-ballxdir;
@@ -97,7 +107,7 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 				ballydir=-ballydir;
 			}
 			if(ballx>getHeight()) {
-				ballxdir=+ballxdir;
+				ballxdir=-ballxdir;
 			}
 		}
 		repaint();
@@ -110,24 +120,27 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode()==KeyEvent.VK_LEFT) {
+			//ballx=barrax;
 			left();
 		}
 		if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
+			//ballx=barrax;
 			rigth();
 		}
 		if(e.getKeyCode()==KeyEvent.VK_SPACE) {
 			start=false;
-			ballx=getWidth()/2;
+			ballx=barrax;
 			bally=getHeight()-100;
 			ballydir=-10;
 			ballxdir=-10;
 			
 		}
 		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
-			if(ballx==getWidth()/2) {
+			if(ballx==barrax) {
 				start=true;
 			}
 		}
+		repaint();
 	}
 
 	@Override
