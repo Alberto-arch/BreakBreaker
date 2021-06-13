@@ -6,12 +6,11 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-public class Blockes extends JComponent {
+public class Blockes {
 	private int coordenadas[][];
 	public Blockes(int x,int y) {
 		coordenadas=new int[x][y];
 	}
-	@Override
 	public void paint(Graphics g) {
 		
 		for(int i=0;i<coordenadas.length;i++) {

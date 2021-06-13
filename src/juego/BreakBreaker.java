@@ -51,20 +51,19 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 		contentPane.setBackground(Color.black);
-		
-		bally=getHeight();
-		ballx=getWidth();
-		
+				
 		barrax=getWidth()/2;
 		barray=getHeight();
 		
 		brick=new Blockes(20,10);
 		addKeyListener(this);
 		
-		timer=new Timer(10,this);
+		timer=new Timer(8,this);
 		timer.start();
 	}
-   
+	public void update(Graphics g) {
+		paint(g);
+	}
 	public void paint(Graphics g) {
     	g.setColor(Color.black);
         g.fillRect(getWidth()-getWidth(),getHeight()-getHeight(),getWidth(),getHeight());
@@ -80,11 +79,13 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 	
 	public void left() {
 		if(barrax>0+10) {
+			start = true;
 			barrax=barrax-40;
 		}		
 	}
 	public void rigth() {
 		if(barrax<getWidth()-100) {
+			start = true;
 			barrax=barrax+40;
 		}		
 	}
@@ -109,6 +110,7 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 			if(ballx>getHeight()) {
 				ballxdir=-ballxdir;
 			}
+			System.out.println(ballx);
 		}
 		repaint();
 	}
@@ -120,37 +122,27 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode()==KeyEvent.VK_LEFT) {
-			//ballx=barrax;
 			left();
 		}
 		if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
-			//ballx=barrax;
 			rigth();
 		}
 		if(e.getKeyCode()==KeyEvent.VK_SPACE) {
-			start=false;
-			ballx=barrax;
-			bally=getHeight()-100;
-			ballydir=-10;
-			ballxdir=-10;
+			if(!start) {
+				ballx=getWidth()/2;
+				bally=getHeight()-100;
+				ballydir=-10;
+				ballxdir=-10;
+				barrax=getWidth()/2;
+			}
+			
 			
 		}
-		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
-			if(ballx==barrax) {
-				start=true;
-			}
-		}
-		repaint();
+		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		
 	}
-	
-	
-
-
-	
-
 }
