@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+//import java.awt.Image;
+import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -28,6 +30,7 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 	private boolean start;
 	private Timer timer;
 	private Blockes brick;
+	private final BufferStrategy bf;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() throws NullPointerException, NumberFormatException {
@@ -60,20 +63,24 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 		
 		timer=new Timer(8,this);
 		timer.start();
+		
+		createBufferStrategy(2);
+		bf=this.getBufferStrategy();
 	}
-	public void update(Graphics g) {
-		paint(g);
-	}
+
 	public void paint(Graphics g) {
-    	g.setColor(Color.black);
-        g.fillRect(getWidth()-getWidth(),getHeight()-getHeight(),getWidth(),getHeight());
+		Graphics2D g2=(Graphics2D)bf.getDrawGraphics();
+    	g2.setColor(Color.black);
+        g2.fillRect(getWidth()-getWidth(),getHeight()-getHeight(),getWidth(),getHeight());
         
-    	brick.paint((Graphics) g);
-    	g.setColor(Color.yellow);
-        g.fillRect (barrax,barray-80,100,20);
+    	brick.paint((Graphics) g2);
+    	g2.setColor(Color.yellow);
+        g2.fillRect (barrax,barray-80,100,20);
                 
-        g.setColor(Color.white);
-        g.fillOval(ballx,bally,20,20);
+        g2.setColor(Color.white);
+        g2.fillOval(ballx*2,bally,20,20);
+        
+        bf.show();
         
     }
 	
@@ -95,7 +102,7 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 		timer.start();
 		
 		if(start) {
-			if (new Rectangle(ballx, bally, 20, 20).intersects(new Rectangle(barrax, getHeight()-80, 100, 20))) {
+			if (new Rectangle(ballx*2, bally, 20, 20).intersects(new Rectangle(barrax, getHeight()-80, 100, 20))) {
                 ballydir=-ballydir;
             }
 			ballx=ballx+ballxdir;
@@ -110,7 +117,6 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 			if(ballx>getHeight()) {
 				ballxdir=-ballxdir;
 			}
-			System.out.println(ballx);
 		}
 		repaint();
 	}
@@ -128,14 +134,17 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 			rigth();
 		}
 		if(e.getKeyCode()==KeyEvent.VK_SPACE) {
-			if(!start) {
 				ballx=getWidth()/2;
 				bally=getHeight()-100;
 				ballydir=-10;
 				ballxdir=-10;
 				barrax=getWidth()/2;
+				start=false;
 			}
-			
+		if(e.getKeyCode()==KeyEvent.VK_SPACE) {
+			if(ballx==getWidth()/2) {
+				start=true;
+				}
 			
 		}
 		
