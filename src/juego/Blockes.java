@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 public class Blockes {
 	private int coordenadas[][];
+	
 	public Blockes(int x,int y) {
 		coordenadas=new int[x][y];
 	}
@@ -19,5 +20,9 @@ public class Blockes {
 				g.fillRect (i*72+110,j*50/2+100,70,20);
 			}
 		}
+	}
+	
+	public int[][] getCoordenadas() {
+		return coordenadas;
 	}
 }
