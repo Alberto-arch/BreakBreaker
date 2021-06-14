@@ -3,9 +3,11 @@ package juego;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -13,11 +15,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
+import agenda.Contacto;
 
 public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 	private JPanel contentPane;
@@ -38,6 +43,10 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 	//creamos el buffer
 	private final BufferStrategy bf;
 	private Graphics2D g2;
+	//Definimos contador de puntos
+	private int puntos;
+	private Point registre;
+	private ArrayList<Point>registro= new ArrayList();
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() throws NullPointerException, NumberFormatException {
@@ -76,7 +85,7 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 		addKeyListener(this);
 		
 	//Llamamos y ejecutamos a la clase Timer y especificamos cada cuando vamos a repintar
-		timer=new Timer(8,this);
+		timer=new Timer(20,this);
 		timer.start();
 		
 	//Creamos un buffer para asegurarnos que solucionamos el problema del
@@ -84,6 +93,7 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 		createBufferStrategy(2);
 		bf=this.getBufferStrategy();
 		
+		registre=new Point();
 		
 	}
 //Con paint crearemos los elementos del juego
@@ -112,6 +122,11 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
         g2.setColor(Color.white);
         g2.fillOval(ballx,bally,20,20);
         
+        //creamos contador de puntos
+    	g2.setColor(Color.white);
+        g2.setFont(new Font("Segoe Script", Font.BOLD + Font.ITALIC, 40));
+        g2.drawString(String.valueOf(puntos)+"/"+"200",getWidth()/2,70);
+
         //mostramos los elementos del buffer
         bf.show();
         
@@ -148,6 +163,7 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		int total=0;
 		//iniciamos intervalo de refresco con la clase timer
 		timer.start();
 		//Si star es verdadero ejecutamos juego
@@ -158,14 +174,14 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
             }
 			//Eleminamos los bloques al colisionar con la bola
 			for(int i=0;i<brick.getCoordenadas().length;i++) {
+				total++;
 				for(int j=0;j<brick.getCoordenadas()[0].length;j++) {
 					//si toca un bloque desaparece
-					if (new Rectangle(ballx, bally, 20, 20).intersects(new Rectangle(i*72+110,j*50/2+100,70,20))){
-				
-						brick.setBricksValue(1, i, j);
-						btotal--;
-						ballydir=-ballydir;
-
+					if (new Rectangle(ballx, bally, 20, 20).intersects(new Rectangle(i*80+50,j*50/2+100,70,20))){
+							if(registro.get(j)!=registre.getLocation() ) {
+								brick.setBricksValue(1, i, j);
+								ballydir=-ballydir;
+							}
 	                }
 				}
 			}
@@ -215,12 +231,11 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 				ballxdir=-10;
 				barrax=getWidth()/2;
 				btotal=200;
-				brick.setreset();;
+				brick.setreset();
+				puntos=0;
 				start=true;
 				
 			}
-		
-		
 	}
 
 	@Override
