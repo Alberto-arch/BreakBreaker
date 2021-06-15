@@ -10,21 +10,19 @@ public class Blockes {
 	//creamos matriz
 	private int coordenadas[][];
 	public Blockes(int x,int y) {
-		//definimos tamaño matriz
+		//definimos tamaï¿½o matriz
 		coordenadas=new int[x][y];
 	
 		
 	}
 	public void paint(Graphics g) {
-		int total=0;
 		//creamos un bucle para la creacion de bloques
 		for(int i=0;i<coordenadas.length;i++) {
 			for(int j=0;j<coordenadas[i].length;j++) {
-				total++;
 				//si el valor de la matriz es zero creamos los bloques
-				if(coordenadas[i][j]==0 && total!=0) {
+				if(coordenadas[i][j]==0) {
 					g.setColor (Color.red);	
-					g.fillRect (i*80+50,j*50/2+100,70,20);
+					g.fillRect (i*80+45,j*50/2+100,70,20);
 				}
 				
 			}

@@ -22,7 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import agenda.Contacto;
 
 public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 	private JPanel contentPane;
@@ -38,15 +37,11 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 	private Timer timer;
 	//llamamos a la clase blockes
 	private Blockes brick;
-	//Total de blockes
-	private int btotal=200;
 	//creamos el buffer
 	private final BufferStrategy bf;
 	private Graphics2D g2;
 	//Definimos contador de puntos
 	private int puntos;
-	private Point registre;
-	private ArrayList<Point>registro= new ArrayList();
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() throws NullPointerException, NumberFormatException {
@@ -68,7 +63,7 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setExtendedState(MAXIMIZED_BOTH);
 		setVisible(true);
-		//Creamos el panel y lo añadimos a la ventana
+		//Creamos el panel y lo aï¿½adimos a la ventana
 		contentPane = new JPanel();
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
@@ -77,15 +72,15 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 		barrax=getWidth()/2;
 		barray=getHeight();
 		
-	//LLamamos a la clase Blokes y introducimos por argumento el tamaño de la 
+	//LLamamos a la clase Blokes y introducimos por argumento el tamaï¿½o de la 
 	//matriz para defir cuantos bloques
-		brick=new Blockes(20,10);
+		brick=new Blockes(23,10);
 		
 	//Especificamos donde ejecutamos las keylistener
 		addKeyListener(this);
 		
 	//Llamamos y ejecutamos a la clase Timer y especificamos cada cuando vamos a repintar
-		timer=new Timer(20,this);
+		timer=new Timer(50,this);
 		timer.start();
 		
 	//Creamos un buffer para asegurarnos que solucionamos el problema del
@@ -93,7 +88,6 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 		createBufferStrategy(2);
 		bf=this.getBufferStrategy();
 		
-		registre=new Point();
 		
 	}
 //Con paint crearemos los elementos del juego
@@ -160,7 +154,10 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 	public Rectangle colDOWN() {
 		return new Rectangle(0,getHeight(),getWidth(),10);
 	}
-	
+	public void victoria() {
+		
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int total=0;
@@ -175,13 +172,12 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 			//Eleminamos los bloques al colisionar con la bola
 			for(int i=0;i<brick.getCoordenadas().length;i++) {
 				total++;
-				for(int j=0;j<brick.getCoordenadas()[0].length;j++) {
+				for(int j=0;j<brick.getCoordenadas()[i].length;j++) {
 					//si toca un bloque desaparece
-					if (new Rectangle(ballx, bally, 20, 20).intersects(new Rectangle(i*80+50,j*50/2+100,70,20))){
-							if(registro.get(j)!=registre.getLocation() ) {
+					if (new Rectangle(ballx, bally, 20, 20).intersects(new Rectangle(i*80+50,j*45/2+100,70,20)) && brick.getCoordenadas()[i][j]==0){
 								brick.setBricksValue(1, i, j);
 								ballydir=-ballydir;
-							}
+								puntos=puntos+1; 
 	                }
 				}
 			}
@@ -199,8 +195,12 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
                 ballxdir=-ballxdir;
             }
 			if (new Rectangle(ballx, bally, 20, 20).intersects(colDOWN())) {
-				JOptionPane.showMessageDialog(null, "Has perdido");
+				JOptionPane.showInternalMessageDialog(null  , "Has perdut "); 
             }
+			
+			if (puntos==200) {
+				JOptionPane.showInternalMessageDialog(null  , "Has guaÃ±at enorabona");
+			}
 		}
 		//recargar los elementos de pantalla
 		repaint();
@@ -230,7 +230,6 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 				ballydir=-10;
 				ballxdir=-10;
 				barrax=getWidth()/2;
-				btotal=200;
 				brick.setreset();
 				puntos=0;
 				start=true;
