@@ -29,8 +29,8 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 	private int barray;
 	private int barrax;
 	//velocidad de movimiento x i y
-	private int ballxdir=-10;
-	private int ballydir=-10;
+	private int ballxdir;
+	private int ballydir;
 	//Si start es true iniciamos juego
 	private boolean start;
 	//creamos timer para especificar el tiempo de refreco en el que vamos a repintar
@@ -80,13 +80,13 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 		addKeyListener(this);
 		
 	//Llamamos y ejecutamos a la clase Timer y especificamos cada cuando vamos a repintar
-		timer=new Timer(50,this);
+		timer=new Timer(8,this);
 		timer.start();
 		
 	//Creamos un buffer para asegurarnos que solucionamos el problema del
 	//parpadeo de pantall al repintar
 		createBufferStrategy(2);
-		bf=this.getBufferStrategy();
+		bf=getBufferStrategy();
 		
 		
 	}
