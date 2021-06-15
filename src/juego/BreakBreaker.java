@@ -74,7 +74,7 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 		
 	//LLamamos a la clase Blokes y introducimos por argumento el tama�o de la 
 	//matriz para defir cuantos bloques
-		brick=new Blockes(23,10);
+		brick=new Blockes((getWidth()/2)/50+2,10);
 		
 	//Especificamos donde ejecutamos las keylistener
 		addKeyListener(this);
@@ -119,7 +119,7 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
         //creamos contador de puntos
     	g2.setColor(Color.white);
         g2.setFont(new Font("Segoe Script", Font.BOLD + Font.ITALIC, 40));
-        g2.drawString(String.valueOf(puntos)+"/"+"200",getWidth()/2,70);
+        g2.drawString(String.valueOf(puntos)+"/"+"180",getWidth()/2,70);
 
         //mostramos los elementos del buffer
         bf.show();
@@ -174,7 +174,7 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 				total++;
 				for(int j=0;j<brick.getCoordenadas()[i].length;j++) {
 					//si toca un bloque desaparece
-					if (new Rectangle(ballx, bally, 20, 20).intersects(new Rectangle(i*80+50,j*45/2+100,70,20)) && brick.getCoordenadas()[i][j]==0){
+					if (new Rectangle(ballx, bally, 20, 20).intersects(new Rectangle(i*80+120,j*50/2+100,70,20)) && brick.getCoordenadas()[i][j]==0){
 								brick.setBricksValue(1, i, j);
 								ballydir=-ballydir;
 								puntos=puntos+1; 
@@ -197,8 +197,8 @@ public class BreakBreaker extends JFrame implements KeyListener,ActionListener {
 			if (new Rectangle(ballx, bally, 20, 20).intersects(colDOWN())) {
 				JOptionPane.showInternalMessageDialog(null  , "Has perdut "); 
             }
-			
-			if (puntos==200) {
+			//Mensaje al acabar con todos los bloques
+			if (puntos==180) {
 				JOptionPane.showInternalMessageDialog(null  , "Has guañat enorabona");
 			}
 		}

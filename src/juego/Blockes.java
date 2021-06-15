@@ -22,7 +22,7 @@ public class Blockes {
 				//si el valor de la matriz es zero creamos los bloques
 				if(coordenadas[i][j]==0) {
 					g.setColor (Color.red);	
-					g.fillRect (i*80+45,j*50/2+100,70,20);
+					g.fillRect (i*80+120,j*50/2+100,70,20);
 				}
 				
 			}
